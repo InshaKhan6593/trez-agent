@@ -1,0 +1,13 @@
+{
+  "name": "zameen-scraper",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "scrape": "node scrape-zameen.mjs --output-dir data/data",
+    "validate:data": "node validate-zameen-data.mjs --input-dir data/data --require-downloaded-media"
+  },
+  "dependencies": {
+    "playwright": "1.62.1"
+  }
+}

@@ -1,0 +1,29 @@
+# Local development database for the Trez WhatsApp property agent.
+# Port 5544 avoids the host Postgres on 5432 and other project containers on 5433.
+# Credentials are local-dev only — do not reuse them anywhere real.
+services:
+  db:
+    image: pgvector/pgvector:0.8.6-pg18-bookworm
+    container_name: trez-agent-db
+    environment:
+      POSTGRES_USER: trez
+      POSTGRES_PASSWORD: trez_local_dev
+      POSTGRES_DB: trez_agent
+      # Deterministic collation so ORDER BY is stable across machines.
+      POSTGRES_INITDB_ARGS: "--locale=C --encoding=UTF8"
+    ports:
+      - "127.0.0.1:5544:5432"
+    volumes:
+      # PG18+ images expect the mount at /var/lib/postgresql (not .../data),
+      # so pg_upgrade --link can work without crossing a mount boundary.
+      - trez_agent_pgdata:/var/lib/postgresql
+      - ./db:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U trez -d trez_agent"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+volumes:
+  trez_agent_pgdata:

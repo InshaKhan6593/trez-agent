@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Scraped data — NEVER commit.
+# This is third-party content (zameen.com listings and media.zameen.com images)
+# plus a client's live business inventory. It is reproducible by running the
+# scraper, and it does not belong in source control.
+data/
+*.db
+*.sqlite3
+
+# Local runtime
+*.log
+.env
+.env.*
+!.env.example
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
