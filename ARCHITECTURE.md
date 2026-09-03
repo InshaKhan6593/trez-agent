@@ -15,7 +15,7 @@ agent. DeepEval for evaluation, LangSmith for tracing.
 │  data/raw/<date>/listings/<id>.json     full scrape record     │
 │  data/raw/<date>/listings.json          aggregate              │
 │  data/raw/<date>/rejected-listings.json what was excluded, why │
-│  data/media/<assetId>.jpeg              shared, deduped photos │
+│  data/media-store/<assetId>.jpeg        shared, deduped photos │
 └────────────────────────────────────────────────────────────────┘
                 │   ETL — pure function, re-runnable, versioned
                 ▼
@@ -91,7 +91,7 @@ distances**. Do not plan around them.
 # Daily: fresh dated snapshot + shared media pool
 node scrape-zameen.mjs \
   --output-dir data/raw/$(date +%Y-%m-%d) \
-  --media-store data/media \
+  --media-store data/media-store \
   --download-media
 ```
 
@@ -437,7 +437,7 @@ silently. One line on WhatsApp removes all doubt.
 ## 9. Daily runbook
 
 ```
-1. Scrape fresh into data/raw/<date>/ with --media-store data/media
+1. Scrape fresh into data/raw/<date>/ with --media-store data/media-store
 2. Validate:  node validate-zameen-data.mjs --input-dir data/raw/<date> \
                 --require-downloaded-media
 3. ETL: re-derive typed rows from raw → upsert Postgres

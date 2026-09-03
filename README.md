@@ -22,7 +22,7 @@ docker compose up -d              # Postgres 18 on 127.0.0.1:5544
 # 1. Scrape into a dated, immutable snapshot
 node scrape-zameen.mjs \
   --output-dir data/raw/$(date +%Y-%m-%d) \
-  --media-store data/media \
+  --media-store data/media-store \
   --download-media
 
 # 2. Validate it
