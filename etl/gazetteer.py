@@ -39,9 +39,19 @@ _LISTING_LEAF = re.compile(
 )
 
 
+# Keep in sync with agents.db.norm — folds "six" -> "6" so one stored alias
+# covers both spellings of numbered place names.
+_NUM_WORDS = {
+    "one": "1", "two": "2", "three": "3", "four": "4", "five": "5",
+    "six": "6", "seven": "7", "eight": "8", "nine": "9", "ten": "10",
+    "eleven": "11", "twelve": "12",
+}
+
+
 def norm(s: str) -> str:
     s = unicodedata.normalize("NFKD", s or "").encode("ascii", "ignore").decode()
-    return re.sub(r"\s+", " ", re.sub(r"[^a-z0-9]+", " ", s.lower())).strip()
+    s = re.sub(r"\s+", " ", re.sub(r"[^a-z0-9]+", " ", s.lower())).strip()
+    return " ".join(_NUM_WORDS.get(w, w) for w in s.split())
 
 
 def strip_type(name: str) -> str:

@@ -25,5 +25,19 @@ services:
       retries: 20
     restart: unless-stopped
 
+  # Public HTTPS tunnel so Meta can reach the local webhook.
+  # host.docker.internal points back at uvicorn running on the host.
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: trez-agent-ngrok
+    command: http host.docker.internal:8000
+    environment:
+      NGROK_AUTHTOKEN: ${NGROK_AUTHTOKEN}
+    ports:
+      - "127.0.0.1:4041:4040"   # ngrok inspector; 4040 is taken by your other project
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+
 volumes:
   trez_agent_pgdata:

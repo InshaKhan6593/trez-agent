@@ -1,0 +1,7 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "trez": "agents.graph:graph"
+  },
+  "env": ".env"
+}
